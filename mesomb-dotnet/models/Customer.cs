@@ -4,14 +4,14 @@ namespace mesomb_dotnet.models;
 
 public class Customer
 {
-    public String email;
-    public String phone;
-    public String town;
-    public String region;
-    public String country;
-    public String first_name;
-    public String last_name;
-    public String address;
+    public String email { set; get; }
+    public String phone { set; get; }
+    public String town { set; get; }
+    public String region { set; get; }
+    public String country { set; get; }
+    public String first_name { set; get; }
+    public String last_name { set; get; }
+    public String address { set; get; }
 
     public Customer(JObject data)
     {
