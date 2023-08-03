@@ -1,0 +1,12 @@
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\bin\Debug\net7.0\mesomb-dotnet.deps.json
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\bin\Debug\net7.0\mesomb-dotnet.dll
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\bin\Debug\net7.0\mesomb-dotnet.pdb
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\obj\Debug\net7.0\mesomb-dotnet.csproj.AssemblyReference.cache
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\obj\Debug\net7.0\mesomb-dotnet.GeneratedMSBuildEditorConfig.editorconfig
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\obj\Debug\net7.0\mesomb-dotnet.AssemblyInfoInputs.cache
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\obj\Debug\net7.0\mesomb-dotnet.AssemblyInfo.cs
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\obj\Debug\net7.0\mesomb-dotnet.csproj.CoreCompileInputs.cache
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\obj\Debug\net7.0\mesomb-dotnet.dll
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\obj\Debug\net7.0\refint\mesomb-dotnet.dll
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\obj\Debug\net7.0\mesomb-dotnet.pdb
+D:\Codes\C#\hachther\mesomb-dotnet\mesomb-dotnet\obj\Debug\net7.0\ref\mesomb-dotnet.dll

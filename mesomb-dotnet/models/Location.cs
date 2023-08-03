@@ -1,17 +1,17 @@
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace mesomb_dotnet.models;
 
 public class Location
 {
-    public String town { set; get; }
-    public String region { set; get; }
-    public String country { set; get; }
+    public String? town;
+    public String? region;
+    public String? country;
 
-    public Location(JObject data)
+    public Location(JsonElement data)
     {
-        this.town = (String)data.GetValue("town");
-        this.country = (String)data.GetValue("country");
-        this.region = (String)data.GetValue("region");
+        this.town = data.GetProperty("town").GetString();
+        this.country = data.GetProperty("country").GetString();
+        this.region = data.GetProperty("region").GetString();
     }
 }

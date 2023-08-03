@@ -1,19 +1,19 @@
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace mesomb_dotnet.models;
 
 public class Product
 {
-    public String name { get; set; }
-    public String category { get; set; }
-    public int quantity { get; set; }
-    public float amount { get; set; }
+    public String? name;
+    public String? category;
+    public int? quantity;
+    public decimal? amount;
 
-    public Product(JObject data)
+    public Product(JsonElement data)
     {
-        this.name = (String)data.GetValue("name");
-        this.category = (String)data.GetValue("category");
-        this.quantity = (int)data.GetValue("quantity");
-        this.amount = (float)data.GetValue("amount");
+        this.name = data.GetProperty("name").GetString();
+        this.category = data.GetProperty("category").GetString();
+        this.quantity = data.GetProperty("quantity").GetInt32();
+        this.amount = data.GetProperty("amount").GetDecimal();
     }
 }

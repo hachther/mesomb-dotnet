@@ -1,5 +1,4 @@
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Collections.Generic;
 
 namespace mesomb_dotnet.models;
@@ -9,46 +8,48 @@ namespace mesomb_dotnet.models;
 */
 public class Application
 {
-    public String key { get; set; }
-    public String logo { get; set; }
-    public ApplicationBalance[] balances { get; set; }
-    public String[] countries { get; set; }
-    public String description { get; set; }
-    public bool isLive { get; set; }
-    public String name { get; set; }
-    public dynamic security;
-    public String status { get; set; }
-    public String url { get; set; }
+    public String? key;
+    public String? logo;
+    public ApplicationBalance[]? balances;
+    public String[]? countries;
+    public String? description;
+    public bool? isLive;
+    public String? name;
+    public dynamic? security;
+    public String? status;
+    public String? url;
 
-    public Application(JObject data)
+    public Application(JsonElement data)
     {
-        this.key = (String)data.GetValue("key");
-        this.logo = (String)data.GetValue("logo");
+        this.key = data.GetProperty("key").GetString();
+        this.logo = data.GetProperty("logo").GetString();
 
         /** create the array of balances*/
-        JObject balances = (JObject)data.GetValue("balances");
-        this.balances = new ApplicationBalance[balances.Values().Count()];
-        for (int i = 0; i < balances.Values().Count(); i++)
+        JsonElement balances = (JsonElement)data.GetProperty("balances");
+
+        this.balances = new ApplicationBalance[balances.GetArrayLength()];
+        for (int i = 0; i < balances.GetArrayLength(); i++)
         {
-            this.balances[i] = new ApplicationBalance((JObject)balances[i]);
+            this.balances[i] = new ApplicationBalance((JsonElement)balances[i]);
         }
 
         /** create the array of countries*/
-        JObject countries = (JObject)data.GetValue("countries");
-        this.countries = new String[countries.Values().Count()];
-        for (int i = 0; i < countries.Values().Count(); i++)
+        JsonElement countries = (JsonElement)data.GetProperty("countries");
+        this.countries = new String[countries.GetArrayLength()];
+        for (int i = 0; i < countries.GetArrayLength(); i++)
         {
-            this.countries[i] = (String)(countries[i]);
+            this.countries[i] = countries[i].GetString();
         }
 
-        this.description = (String)data.GetValue("description");
-        this.isLive = (bool)data.GetValue("is_live");
-        this.name = (String)data.GetValue("name");
 
-        this.security = (JObject)data.GetValue("security");
+        this.description = data.GetProperty("description").GetString();
+        this.isLive = data.GetProperty("is_live").GetBoolean();
+        this.name = data.GetProperty("name").GetString();
 
-        this.status = (String)data.GetValue("status");
-        this.url = (String)data.GetValue("url");
+        this.security = (JsonElement)data.GetProperty("security");
+
+        this.status = data.GetProperty("status").GetString();
+        this.url = data.GetProperty("url").GetString();
     }
 
 }

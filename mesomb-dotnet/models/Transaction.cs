@@ -1,61 +1,61 @@
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace mesomb_dotnet.models;
 
 public class Transaction
 {
-    public String pk { get; set; }
-    public String status { get; set; }
-    public String type { get; set; }
-    public Double amount { get; set; }
-    public Double fees { get; set; }
-    public String b_party { get; set; }
-    public String message { get; set; }
-    public String service { get; set; }
-    public String reference { get; set; }
-    public DateTime ts { get; set; }
-    public String country { get; set; }
-    public String currency { get; set; }
-    public String fin_trx_id { get; set; }
-    public Double trxamount { get; set; }
-    public Customer customer { get; set; }
-    public Location location { get; set; }
-    public Product[] products { get; set; }
+    public String? pk;
+    public String? status;
+    public String? type;
+    public Double? amount;
+    public Double? fees;
+    public String? b_party;
+    public String? message;
+    public String? service;
+    public String? reference;
+    public DateTime? ts;
+    public String? country;
+    public String? currency;
+    public String? fin_trx_id;
+    public Double? trxamount;
+    public Customer customer;
+    public Location location;
+    public Product[] products;
 
-    public Transaction(JObject data)
+    public Transaction(JsonElement data)
     {
-        this.pk = (String)data.GetValue("pk");
-        this.status = (String)data.GetValue("status");
-        this.type = (String)data.GetValue("type");
-        this.amount = (Double)data.GetValue("amount");
-        this.fees = (Double)data.GetValue("fees");
-        this.b_party = (String)data.GetValue("b_party");
-        this.message = (String)data.GetValue("message");
-        this.service = (String)data.GetValue("service");
-        this.reference = (String)data.GetValue("reference");
-        this.ts = (DateTime)data.GetValue("ts");
-        this.country = (String)data.GetValue("country");
-        this.currency = (String)data.GetValue("currency");
-        this.fin_trx_id = (String)data.GetValue("fin_trx_id");
-        this.trxamount = (Double)data.GetValue("trxamount");
+        this.pk = data.GetProperty("pk").GetString();
+        this.status = data.GetProperty("status").GetString();
+        this.type = data.GetProperty("type").GetString();
+        this.amount = data.GetProperty("amount").GetDouble();
+        this.fees = data.GetProperty("fees").GetDouble();
+        this.b_party = data.GetProperty("b_party").GetString();
+        this.message = data.GetProperty("message").GetString();
+        this.service = data.GetProperty("service").GetString();
+        this.reference = data.GetProperty("reference").GetString();
+        this.ts = data.GetProperty("ts").GetDateTime();
+        this.country = data.GetProperty("country").GetString();
+        this.currency = data.GetProperty("currency").GetString();
+        this.fin_trx_id = data.GetProperty("fin_trx_id").GetString();
+        this.trxamount = data.GetProperty("trxamount").GetDouble();
 
-        if (data.GetValue("customer") != null)
+        if (data.GetProperty("customer").ToString() != null)
         {
-            this.customer = new Customer((JObject)data.GetValue("customer"));
+            this.customer = new Customer((JsonElement)data.GetProperty("customer"));
         }
 
-        if (data.GetValue("location") != null)
+        if (data.GetProperty("location").ToString() != null)
         {
-            this.location = new Location((JObject)data.GetValue("location"));
+            this.location = new Location((JsonElement)data.GetProperty("location"));
         }
 
-        if (data.GetValue("products") != null)
+        if (data.GetProperty("products").ToString() != null)
         {
-            JObject products = (JObject)data.GetValue("products");
-            this.products = new Product[products.Values().Count()];
-            for (int i = 0; i < products.Values().Count(); i++)
+            JsonElement products = (JsonElement)data.GetProperty("products");
+            this.products = new Product[products.GetArrayLength()];
+            for (int i = 0; i < products.GetArrayLength(); i++)
             {
-                this.products[i] = new Product((JObject)products[i]);
+                this.products[i] = new Product((JsonElement)products[i]);
             }
         }
     }

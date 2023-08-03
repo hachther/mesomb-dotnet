@@ -1,24 +1,24 @@
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace mesomb_dotnet.models;
 
 public class TransactionResponse
 {
-    public bool success { get; set; }
-    public String message { get; set; }
-    public String redirect { get; set; }
-    public Transaction transaction { get; set; }
-    public String reference { get; set; }
-    public String status { get; set; }
+    public bool success;
+    public String? message;
+    public String? redirect;
+    public Transaction? transaction;
+    public String? reference;
+    public String? status;
 
-    public TransactionResponse(JObject data)
+    public TransactionResponse(JsonElement data)
     {
-        this.success = (bool)data.GetValue("success");
-        this.message = (String)data.GetValue("message");
-        this.redirect = (String)data.GetValue("redirect");
-        this.transaction = new Transaction((JObject)data.GetValue("transaction"));
-        this.reference = (String)data.GetValue("reference");
-        this.status = (String)data.GetValue("status");
+        this.success = data.GetProperty("success").GetBoolean();
+        this.message = data.GetProperty("message").GetString();
+        this.redirect = data.GetProperty("redirect").GetString();
+        this.transaction = new Transaction((JsonElement)data.GetProperty("transaction"));
+        this.reference = data.GetProperty("reference").GetString();
+        this.status = data.GetProperty("status").GetString();
     }
 
     public bool isOperationSuccess()
