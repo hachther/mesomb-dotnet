@@ -2,13 +2,13 @@
 public class MeSomb
 {
     /** The MeSomb API key to be used for requests. */
-    public static String apiKey;
+    public static String? apiKey;
 
     /** The MeSomb client key to be used for Connect requests. */
-    public static String clientKey;
+    public static String? clientKey;
 
     /** he MeSomb secret key to be used for Connect requests. */
-    public static String secretKey;
+    public static String? secretKey;
 
     /** The base URL for the MeSomb API. */
     public static String apiBase = "https://mesomb.hachther.com";
@@ -18,7 +18,7 @@ public class MeSomb
     public static String version = "1.1.2";
 
     /** The application's information (name, version, URL) */
-    public static String appInfo;
+    public static String? appInfo;
 
     /** Algorithm to used for signature */
     public static String algorithm = "HMAC-SHA1";

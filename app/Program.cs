@@ -2,6 +2,7 @@
 using mesomb_dotnet.Signature;
 namespace app;
 
+// class for futher testing needs of the final package
 public class Program
 {
     static void Main(string[] args)

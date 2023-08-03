@@ -1,6 +1,7 @@
+
 using System.Security.Cryptography;
 using System.Text;
-using Newtonsoft.Json.Linq;
+
 
 namespace mesomb_dotnet;
 
@@ -10,6 +11,7 @@ public class Signature
     {
         const String hexStr = "0123456789abcdef";
         char[] hexArray = new char[hexStr.Length];
+        // transform the hexStr into a hexArray
         for (int i = 0; i < hexStr.Length; i++)
         {
             hexArray[i] = hexStr[i];
@@ -23,27 +25,38 @@ public class Signature
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
 
-        return new string(hexChars);
+        return new String(hexChars);
     }
 
     /**
      * compute the hash of a string based on the SHA1 algorithm
      */
-    public static String Sha1(string input)
+    public static String Sha1(String? input)
     {
-        HashAlgorithm ha = HashAlgorithm.Create("SHA-1");
-        return BytesToHex(ha.ComputeHash(Encoding.ASCII.GetBytes(input)));
+        using (SHA1 sha1 = SHA1.Create())
+        {
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            byte[] hashBytes = sha1.ComputeHash(inputBytes);
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                builder.Append(hashBytes[i].ToString());
+            }
+            return builder.ToString();
+        }
     }
 
     /**
      * Compute the HMACSHA1 of an input string based on a key
     */
-    public static String hmacSha1(String key, String input)
+    public static String hmacSHA1SignData(String key, String input)
     {
-        HMACSHA1 hmacSHA1 = new HMACSHA1();
-        hmacSHA1.Key = Encoding.ASCII.GetBytes(key);
+        byte[] secretKeyBytes = Encoding.UTF8.GetBytes(key);
 
-        return BytesToHex(hmacSHA1.ComputeHash(Encoding.ASCII.GetBytes(input)));
+        HMACSHA1 hmacsha1 = new HMACSHA1(secretKeyBytes);
+        byte[] dataBytes = Encoding.UTF8.GetBytes(input);
+        byte[] calcHash = hmacsha1.ComputeHash(dataBytes);
+        return BytesToHex(calcHash);
     }
 
     public static String signRequest(string service, string method, string url, DateTime date,
@@ -55,7 +68,7 @@ public class Signature
         Uri parse = new Uri(url);
 
         string canonicalQuery = parse.Query != null ? parse.Query : "";
-        long timestamp = date.Ticks / TimeSpan.TicksPerSecond;
+        long timestamp = date.Ticks / 1000;
 
         if (headers == null)
         {
@@ -78,15 +91,13 @@ public class Signature
 
         string canonicalHeaders = string.Join("\n", headersTokens);
 
-        string payloadHash = Sha1(body != null ? body.ToString() : "{}");
+        string payloadHash = Sha1(body != null ? body.ToString().Replace("\\/", "/") : "{}");
 
         string signedHeaders = string.Join(";", headersKeys);
 
         string path;
 
-
         path = Uri.UnescapeDataString(parse.AbsolutePath);
-
 
         string canonicalRequest = method + "\n" + path + "\n" + canonicalQuery + "\n" + canonicalHeaders + "\n" + signedHeaders + "\n" + payloadHash;
 
@@ -96,8 +107,7 @@ public class Signature
 
         string stringToSign = algorithm + "\n" + timestamp + "\n" + scope + "\n" + Sha1(canonicalRequest);
 
-        string signature = hmacSha1(credentials["secretKey"], stringToSign);
-
+        string signature = hmacSHA1SignData(credentials["secretKey"], stringToSign);
         return algorithm + " Credential=" + credentials["accessKey"] + "/" + scope + ", SignedHeaders=" + signedHeaders + ", Signature=" + signature;
     }
 }
