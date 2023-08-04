@@ -7,7 +7,7 @@ namespace mesomb_dotnet;
 
 public class Signature
 {
-    public static string BytesToHex(byte[] bytes)
+    public static String BytesToHex(byte[] bytes)
     {
         const String hexStr = "0123456789abcdef";
         char[] hexArray = new char[hexStr.Length];
@@ -29,7 +29,7 @@ public class Signature
     }
 
     /**
-     * compute the hash of a string based on the SHA1 algorithm
+     * compute the hash of a String based on the SHA1 algorithm
      */
     public static String Sha1(String? input)
     {
@@ -47,7 +47,7 @@ public class Signature
     }
 
     /**
-     * Compute the HMACSHA1 of an input string based on a key
+     * Compute the HMACSHA1 of an input String based on a key
     */
     public static String hmacSHA1SignData(String key, String input)
     {
@@ -59,55 +59,55 @@ public class Signature
         return BytesToHex(calcHash);
     }
 
-    public static String signRequest(string service, string method, string url, DateTime date,
-        string nonce, Dictionary<string, string> credentials, SortedDictionary<string, string> headers,
-        Dictionary<string, object> body)
+    public static String signRequest(String service, String method, String url, DateTime date,
+        String nonce, Dictionary<String, String> credentials, SortedDictionary<String, String> headers,
+        Dictionary<String, Object> body)
     {
-        string algorithm = MeSomb.algorithm;
+        String algorithm = MeSomb.algorithm;
 
         Uri parse = new Uri(url);
 
-        string canonicalQuery = parse.Query != null ? parse.Query : "";
+        String canonicalQuery = parse.Query != null ? parse.Query : "";
         long timestamp = date.Ticks / 1000;
 
         if (headers == null)
         {
-            headers = new SortedDictionary<string, string>();
+            headers = new SortedDictionary<String, String>();
         }
 
         headers.Add("host", parse.Scheme + "://" + parse.Host + (parse.Port > 0 ? ":" + parse.Port : ""));
         headers.Add("x-mesomb-date", timestamp.ToString());
         headers.Add("x-mesomb-nonce", nonce);
 
-        string[] headersTokens = new string[headers.Count];
-        string[] headersKeys = new string[headers.Count];
+        String[] headersTokens = new String[headers.Count];
+        String[] headersKeys = new String[headers.Count];
         int i = 0;
-        foreach (string key in headers.Keys)
+        foreach (String key in headers.Keys)
         {
             headersTokens[i] = key + ":" + headers[key];
             headersKeys[i] = key;
             i++;
         }
 
-        string canonicalHeaders = string.Join("\n", headersTokens);
+        String canonicalHeaders = String.Join("\n", headersTokens);
 
-        string payloadHash = Sha1(body != null ? body.ToString().Replace("\\/", "/") : "{}");
+        String payloadHash = Sha1(body != null ? body.ToString().Replace("\\/", "/") : "{}");
 
-        string signedHeaders = string.Join(";", headersKeys);
+        String signedHeaders = String.Join(";", headersKeys);
 
-        string path;
+        String path;
 
         path = Uri.UnescapeDataString(parse.AbsolutePath);
 
-        string canonicalRequest = method + "\n" + path + "\n" + canonicalQuery + "\n" + canonicalHeaders + "\n" + signedHeaders + "\n" + payloadHash;
+        String canonicalRequest = method + "\n" + path + "\n" + canonicalQuery + "\n" + canonicalHeaders + "\n" + signedHeaders + "\n" + payloadHash;
 
-        string dateFormat = "yyyyMMdd";
+        String dateFormat = "yyyyMMdd";
 
-        string scope = date.ToString(dateFormat) + "/" + service + "/mesomb_request";
+        String scope = date.ToString(dateFormat) + "/" + service + "/mesomb_request";
 
-        string stringToSign = algorithm + "\n" + timestamp + "\n" + scope + "\n" + Sha1(canonicalRequest);
+        String StringToSign = algorithm + "\n" + timestamp + "\n" + scope + "\n" + Sha1(canonicalRequest);
 
-        string signature = hmacSHA1SignData(credentials["secretKey"], stringToSign);
+        String signature = hmacSHA1SignData(credentials["secretKey"], StringToSign);
         return algorithm + " Credential=" + credentials["accessKey"] + "/" + scope + ", SignedHeaders=" + signedHeaders + ", Signature=" + signature;
     }
 }
