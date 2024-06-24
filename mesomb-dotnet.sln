@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mesomb-dotnet", "mesomb-dotnet\mesomb-dotnet.csproj", "{7C8BE6CE-D653-4FB0-BA91-E4B39B611D5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mesomb_dotnet", "mesomb_dotnet\mesomb_dotnet.csproj", "{7C8BE6CE-D653-4FB0-BA91-E4B39B611D5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app", "app\app.csproj", "{C2651F6B-342C-4AEE-ABD4-AD26D33D3851}"
 EndProject

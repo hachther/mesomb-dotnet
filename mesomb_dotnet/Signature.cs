@@ -1,7 +1,8 @@
 
 using System.Security.Cryptography;
 using System.Text;
-
+using System.Text.Json;
+using System.Text.Encodings.Web;
 
 namespace mesomb_dotnet;
 
@@ -33,14 +34,17 @@ public class Signature
      */
     public static String Sha1(String? input)
     {
-        using (SHA1 sha1 = SHA1.Create())
+        
+        using (SHA1 sha1Hash = SHA1.Create())
         {
-            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-            byte[] hashBytes = sha1.ComputeHash(inputBytes);
+            // ComputeHash - returns byte array  
+            byte[] bytes = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+            // Convert byte array to a string   
             StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
+            for (int i = 0; i < bytes.Length; i++)
             {
-                builder.Append(hashBytes[i].ToString());
+                builder.Append(bytes[i].ToString("x2"));
             }
             return builder.ToString();
         }
@@ -60,15 +64,15 @@ public class Signature
     }
 
     public static String signRequest(String service, String method, String url, DateTime date,
-        String nonce, Dictionary<String, String> credentials, SortedDictionary<String, String> headers,
-        Dictionary<String, Object> body)
+        String nonce, Dictionary<String, String> credentials, SortedDictionary<string, string>? headers,
+        Dictionary<string, object>? body)
     {
         String algorithm = MeSomb.algorithm;
 
         Uri parse = new Uri(url);
 
         String canonicalQuery = parse.Query != null ? parse.Query : "";
-        long timestamp = date.Ticks / 1000;
+        long timestamp = ((DateTimeOffset)date.ToLocalTime()).ToUnixTimeSeconds();
 
         if (headers == null)
         {
@@ -91,7 +95,14 @@ public class Signature
 
         String canonicalHeaders = String.Join("\n", headersTokens);
 
-        String payloadHash = Sha1(body != null ? body.ToString().Replace("\\/", "/") : "{}");
+        Console.WriteLine(JsonSerializer.Serialize(body, new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        }));
+        String payloadHash = Sha1(body == null ? "{}" : JsonSerializer.Serialize(body, new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        }));
 
         String signedHeaders = String.Join(";", headersKeys);
 
