@@ -94,11 +94,9 @@ public class Signature
         }
 
         String canonicalHeaders = String.Join("\n", headersTokens);
-
-        Console.WriteLine(JsonSerializer.Serialize(body, new JsonSerializerOptions
-        {
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        }));
+        Console.WriteLine(canonicalHeaders);
+        Console.WriteLine("canonicalHeaders");
+        
         String payloadHash = Sha1(body == null ? "{}" : JsonSerializer.Serialize(body, new JsonSerializerOptions
         {
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping

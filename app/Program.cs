@@ -8,8 +8,17 @@ namespace app;
 public class Program
 {
     static void Main(string[] args)
-    {
-        PaymentOperation paymentOperation = new(MeSomb.apiKey,MeSomb.clientKey,MeSomb.secretKey,MeSomb.apiBase,MeSomb.apiVersion);
+    { 
+        String applicationKey = "2bb525516ff374bb52545bf22ae4da7d655ba9fd";
+        String accessKey = "c6c40b76-8119-4e93-81bf-bfb55417b392";
+        String secretKey = "fe8c2445-810f-4caa-95c9-778d51580163";
+        
+        PaymentOperation paymentOperation = new(
+            applicationKey,
+            accessKey,
+            secretKey
+        );
+        MeSomb.apiBase = "http://192.168.100.10:8000";
         Dictionary<string, object> parameters = new Dictionary<string, object>() 
         {
             {"payer", "670000000" },
