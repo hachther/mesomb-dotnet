@@ -4,24 +4,24 @@ namespace mesomb_dotnet.models;
 
 public class Customer
 {
-    public String? email;
-    public String? phone;
-    public String? town;
-    public String? region;
-    public String? country;
-    public String? first_name;
-    public String? last_name;
-    public String? address;
+    public String? Email;
+    public String? Phone;
+    public String? Town;
+    public String? Region;
+    public String? Country;
+    public String? FirstName;
+    public String? LastName;
+    public String? Address;
 
     public Customer(JsonElement data)
     {
-        this.email = data.GetProperty("email").GetString();
-        this.phone = data.GetProperty("phone").GetString();
-        this.town = data.GetProperty("town").GetString();
-        this.region = data.GetProperty("region").GetString();
-        this.country = data.GetProperty("country").GetString();
-        this.first_name = data.GetProperty("first_name").GetString();
-        this.last_name = data.GetProperty("last_name").GetString();
-        this.address = data.GetProperty("address").GetString();
+        Email = data.GetProperty("email").GetString();
+        Phone = data.GetProperty("phone").GetString();
+        Town = data.GetProperty("town").GetString();
+        Region = data.GetProperty("region").GetString();
+        Country = data.GetProperty("country").GetString();
+        FirstName = data.GetProperty("first_name").GetString();
+        LastName = data.GetProperty("last_name").GetString();
+        Address = data.GetProperty("address").GetString();
     }
 }

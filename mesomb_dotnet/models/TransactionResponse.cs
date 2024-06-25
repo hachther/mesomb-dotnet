@@ -4,30 +4,30 @@ namespace mesomb_dotnet.models;
 
 public class TransactionResponse
 {
-    public bool success;
-    public String? message;
-    public String? redirect;
-    public Transaction? transaction;
-    public String? reference;
-    public String? status;
+    public readonly bool Success;
+    public String? Message;
+    public String? Redirect;
+    public Transaction? Transaction;
+    public readonly String? Reference;
+    public readonly String? Status;
 
     public TransactionResponse(JsonElement data)
     {
-        this.success = data.GetProperty("success").GetBoolean();
-        this.message = data.GetProperty("message").GetString();
-        this.redirect = data.GetProperty("redirect").GetString();
-        this.transaction = new Transaction((JsonElement)data.GetProperty("transaction"));
-        this.reference = data.GetProperty("reference").GetString();
-        this.status = data.GetProperty("status").GetString();
+        Success = data.GetProperty("success").GetBoolean();
+        Message = data.GetProperty("message").GetString();
+        Redirect = data.GetProperty("redirect").GetString();
+        Transaction = new Transaction(data.GetProperty("transaction"));
+        Reference = data.GetProperty("reference").GetString();
+        Status = data.GetProperty("status").GetString();
     }
 
-    public bool isOperationSuccess()
+    public bool IsOperationSuccess()
     {
-        return this.success;
+        return Success;
     }
 
-    public bool isTransactionSuccess()
+    public bool IsTransactionSuccess()
     {
-        return this.success && this.status == "SUCCESS";
+        return Success && Status == "SUCCESS";
     }
 }

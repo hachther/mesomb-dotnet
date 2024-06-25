@@ -1,15 +1,6 @@
 ﻿namespace mesomb_dotnet;
 public class MeSomb
 {
-    /** The MeSomb API key to be used for requests. */
-    public static String? apiKey;
-
-    /** The MeSomb client key to be used for Connect requests. */
-    public static String? clientKey;
-
-    /** he MeSomb secret key to be used for Connect requests. */
-    public static String? secretKey;
-
     /** The base URL for the MeSomb API. */
     public static String apiBase = "https://mesomb.hachther.com";
 

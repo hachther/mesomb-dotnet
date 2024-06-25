@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Collections.Generic;
 
 namespace mesomb_dotnet.models;
 
@@ -8,33 +7,33 @@ namespace mesomb_dotnet.models;
 */
 public class Application
 {
-    public String? key;
-    public String? logo;
-    public ApplicationBalance[]? balances;
-    public String[]? countries;
-    public String? description;
-    public bool? isLive;
-    public String? name;
-    public dynamic? security;
-    public String? status;
-    public String? url;
+    public String? Key;
+    public String? Logo;
+    public readonly ApplicationBalance[]? balances;
+    public readonly String[]? countries;
+    public String? Description;
+    public bool? IsLive;
+    public String? Name;
+    public dynamic? Security;
+    public String? Status;
+    public String? Url;
 
     public Application(JsonElement data)
     {
-        this.key = data.GetProperty("key").GetString();
-        this.logo = data.GetProperty("logo").GetString();
+        Key = data.GetProperty("key").GetString();
+        Logo = data.GetProperty("logo").GetString();
 
         /** create the array of balances*/
-        JsonElement balances = (JsonElement)data.GetProperty("balances");
+        JsonElement balances = data.GetProperty("balances");
 
         this.balances = new ApplicationBalance[balances.GetArrayLength()];
         for (int i = 0; i < balances.GetArrayLength(); i++)
         {
-            this.balances[i] = new ApplicationBalance((JsonElement)balances[i]);
+            this.balances[i] = new ApplicationBalance(balances[i]);
         }
 
         /** create the array of countries*/
-        JsonElement countries = (JsonElement)data.GetProperty("countries");
+        JsonElement countries = data.GetProperty("countries");
         this.countries = new String[countries.GetArrayLength()];
         for (int i = 0; i < countries.GetArrayLength(); i++)
         {
@@ -42,14 +41,14 @@ public class Application
         }
 
 
-        this.description = data.GetProperty("description").GetString();
-        this.isLive = data.GetProperty("is_live").GetBoolean();
-        this.name = data.GetProperty("name").GetString();
+        Description = data.GetProperty("description").GetString();
+        IsLive = data.GetProperty("is_live").GetBoolean();
+        Name = data.GetProperty("name").GetString();
 
-        this.security = (JsonElement)data.GetProperty("security");
+        Security = data.GetProperty("security");
 
-        this.status = data.GetProperty("status").GetString();
-        this.url = data.GetProperty("url").GetString();
+        Status = data.GetProperty("status").GetString();
+        Url = data.GetProperty("url").GetString();
     }
 
 }

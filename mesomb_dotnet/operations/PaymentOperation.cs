@@ -1,6 +1,9 @@
+using System.Text.Encodings.Web;
 using mesomb_dotnet.models;
+using System.Text.Json;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using JsonException = System.Text.Json.JsonException;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace mesomb_dotnet.operations;
 
@@ -36,8 +39,8 @@ public class PaymentOperation
 
         if (message.StartsWith("{"))
         {
-            var data = JObject.Parse(message);
-            message = data["detail"]!.ToString();
+            Dictionary<string, object> data = JsonSerializer.Deserialize<Dictionary<string, object>>(message)!;
+            message = data["detail"].ToString();
             code = data["code"]?.ToString();
         }
 
@@ -52,7 +55,7 @@ public class PaymentOperation
     }
     
     
-    private async Task<string> ExecuteRequestAsync(string method, string endpoint, DateTime date, string nonce,
+    private async Task<JsonElement> ExecuteRequestAsync(string method, string endpoint, DateTime date, string nonce,
         Dictionary<string, object>? body = null, string? mode = null)
     {
         var url = BuildUrl(endpoint);
@@ -74,7 +77,10 @@ public class PaymentOperation
         if (body != null)
         {
             body["source"] = $"MeSombCSharp/{MeSomb.version}";
-            request.Content = new StringContent(JsonConvert.SerializeObject(body), null, JsonMediaType);
+            request.Content = new StringContent(JsonSerializer.Serialize(body, new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            }), null, JsonMediaType);
         }
         
         var authorization = body != null && method == HttpMethod.Post.Method
@@ -91,8 +97,8 @@ public class PaymentOperation
         {
             await ProcessClientExceptionAsync((int)response.StatusCode, responseContent);
         }
-
-        return responseContent;
+        
+        return JsonSerializer.Deserialize<JsonElement>(responseContent)!;
     }
 
     public async Task<TransactionResponse> MakeCollectAsync(Dictionary<string, object> parameters)
@@ -128,7 +134,7 @@ public class PaymentOperation
         {
             var response = await ExecuteRequestAsync("POST", endpoint, date, (string)parameters["nonce"], body,
                 parameters.GetValueOrDefault("mode", "synchronous").ToString());
-            return JsonConvert.DeserializeObject<TransactionResponse>(response);
+            return new TransactionResponse(response);
         }
         catch (JsonException e)
         {

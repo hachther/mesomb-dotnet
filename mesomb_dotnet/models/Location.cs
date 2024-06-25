@@ -4,14 +4,14 @@ namespace mesomb_dotnet.models;
 
 public class Location
 {
-    public String? town;
-    public String? region;
-    public String? country;
+    public String? Town;
+    public String? Region;
+    public String? Country;
 
     public Location(JsonElement data)
     {
-        this.town = data.GetProperty("town").GetString();
-        this.country = data.GetProperty("country").GetString();
-        this.region = data.GetProperty("region").GetString();
+        Town = data.GetProperty("town").GetString();
+        Region = data.GetProperty("country").GetString();
+        Country = data.GetProperty("region").GetString();
     }
 }

@@ -79,7 +79,7 @@ public class Signature
             headers = new SortedDictionary<String, String>();
         }
 
-        headers.Add("host", parse.Scheme + "://" + parse.Host + (parse.Port > 0 ? ":" + parse.Port : ""));
+        headers.Add("host", parse.Scheme + "://" + parse.Host + (parse.Port > 0 && (parse.Port != 80 && parse.Port != 443) ? ":" + parse.Port : ""));
         headers.Add("x-mesomb-date", timestamp.ToString());
         headers.Add("x-mesomb-nonce", nonce);
 
@@ -94,8 +94,6 @@ public class Signature
         }
 
         String canonicalHeaders = String.Join("\n", headersTokens);
-        Console.WriteLine(canonicalHeaders);
-        Console.WriteLine("canonicalHeaders");
         
         String payloadHash = Sha1(body == null ? "{}" : JsonSerializer.Serialize(body, new JsonSerializerOptions
         {
